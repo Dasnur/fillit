@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   fillit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 19:53:54 by atote             #+#    #+#             */
-/*   Updated: 2019/10/19 15:02:43 by atote            ###   ########.fr       */
+/*   Created: 2019/10/19 15:04:43 by atote             #+#    #+#             */
+/*   Updated: 2019/10/19 15:29:52 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fillit.h"
 
-void	ft_free_array(char **map, int size)
+int		main(int argc, char **argv)
 {
-	int i;
+	int		fd;
+	int		amount;
+	t_tetro	tetrominoses[26];
 
-	i = 0;
-	while (i < size)
+	if (argc != 2)
+		return (0);
+	fd = open(argv[1], O_RDONLY);
+	if ((amount = read_tetrominos(fd, tetrominoses)) == -1)
 	{
-		free(map[i]);
-		i++;
+		ft_putstr_fd("error\n", 1);
+		return (0);
 	}
+	recursive_fill(tetrominoses, amount);
+	return (0);
 }

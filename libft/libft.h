@@ -6,7 +6,7 @@
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/07 20:19:09 by atote             #+#    #+#             */
-/*   Updated: 2019/09/16 18:37:20 by atote            ###   ########.fr       */
+/*   Updated: 2019/10/19 15:16:34 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 
 # define BUFF_SIZE 32
 
-typedef struct	s_list {
-    void *content;
-    size_t content_size;
-    struct s_list *next;
+typedef struct	s_list
+{
+	void			*content;
+	size_t			content_size;
+	struct s_list	*next;
 }				t_list;
 
 void			ft_bzero(void *s, size_t n);

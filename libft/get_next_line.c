@@ -6,7 +6,7 @@
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 17:39:30 by atote             #+#    #+#             */
-/*   Updated: 2019/10/07 15:48:11 by atote            ###   ########.fr       */
+/*   Updated: 2019/10/19 15:03:47 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char		*swap_bufs(char *s1, char *s2)
 	return (s1);
 }
 
-static int			mread_buf(char **tmp, char *buf, char **buffres, char **line)
+static int		mread_buf(char **tmp, char *buf, char **buffres, char **line)
 {
 	int		i;
 
@@ -50,7 +50,7 @@ static int			mread_buf(char **tmp, char *buf, char **buffres, char **line)
 	return (0);
 }
 
-static int			mtmp_buf(char **tmp, char **line)
+static int		mtmp_buf(char **tmp, char **line)
 {
 	char	*buffres;
 	int		i;
@@ -75,7 +75,7 @@ static int			mtmp_buf(char **tmp, char **line)
 	return (0);
 }
 
-static int			last_string(char **tmp, char **buffres, char **line)
+static int		last_string(char **tmp, char **buffres, char **line)
 {
 	if ((*buffres)[0] != '\0')
 	{
@@ -97,7 +97,7 @@ static int			last_string(char **tmp, char **buffres, char **line)
 	return (0);
 }
 
-int			        get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	int				ret;
 	static char		*tmp[2147483648];

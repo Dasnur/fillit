@@ -1,10 +1,22 @@
-#include "main.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   recursive_fill.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/19 14:55:55 by atote             #+#    #+#             */
+/*   Updated: 2019/10/19 15:19:34 by atote            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	free_last_tetro(char **map, int size, char ch)
+#include "fillit.h"
+
+void		free_last_tetro(char **map, int size, char ch)
 {
 	int i;
 	int j;
-	
+
 	i = 0;
 	while (i < size)
 	{
@@ -19,11 +31,11 @@ void	free_last_tetro(char **map, int size, char ch)
 	}
 }
 
-void	swap_tetros(t_tetro *tetros, int amount)
+void		swap_tetros(t_tetro *tetros, int amount)
 {
-	t_tetro tmp;
-	int 	i;
-	
+	t_tetro	tmp;
+	int		i;
+
 	i = 0;
 	while (i < amount)
 	{
@@ -34,12 +46,12 @@ void	swap_tetros(t_tetro *tetros, int amount)
 	}
 }
 
-char	**new_map(int s)
+char		**new_map(int s)
 {
 	char	**map;
-	int 	i;
-	int 	j;
-	
+	int		i;
+	int		j;
+
 	j = 0;
 	i = 0;
 	map = (char **)malloc(sizeof(char *) * s);
@@ -65,8 +77,8 @@ char	**new_map(int s)
 
 t_options	fill_tetros(t_tetro *tetro, t_options *map, int k)
 {
-	int 	i;
-	
+	int		i;
+
 	i = 0;
 	while (i < 4)
 	{
@@ -126,13 +138,13 @@ t_options	fill_tetros(t_tetro *tetro, t_options *map, int k)
 	return (*map);
 }
 
-int		recursive_fill(t_tetro *tetros, int amount)
+int			recursive_fill(t_tetro *tetros, int amount)
 {
 	t_options	map;
-	int 			k;
+	int			k;
 	t_options	res;
-	int		i;
-	
+	int			i;
+
 	i = 0;
 	k = 0;
 	map.amount = amount;
@@ -144,10 +156,9 @@ int		recursive_fill(t_tetro *tetros, int amount)
 	res = fill_tetros(tetros, &map, k);
 	while (i < map.s)
 	{
-		printf("%s", res.squad[i]);
-		printf("%s", "\n");
+		ft_putstr(map.squad[i]);
+		ft_putstr("\n");
 		i++;
 	}
 	return (0);
 }
-

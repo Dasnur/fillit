@@ -1,10 +1,22 @@
-#include "../libft/libft.h"
-#include "main.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/19 14:48:08 by atote             #+#    #+#             */
+/*   Updated: 2019/10/19 16:25:42 by atote            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int 	check_chars_in_line(char *line)
+#include "../libft/libft.h"
+#include "fillit.h"
+
+int		check_chars_in_line(char *line)
 {
-	int i;
-	
+	size_t	i;
+
 	i = 0;
 	while (i < ft_strlen(line))
 	{
@@ -15,16 +27,16 @@ int 	check_chars_in_line(char *line)
 	return (0);
 }
 
-int		check_sharps_line(char ** map, int i, int *count)
+int		check_sharps_line(char **map, int i, int *count)
 {
 	int flag;
 	int j;
-	
+
 	j = 0;
 	flag = 0;
 	while (j < 4)
 	{
-		if (map[i][j] == '#')
+		while (map[i][j] == '#')
 		{
 			if (i != 3)
 			{
@@ -34,7 +46,10 @@ int		check_sharps_line(char ** map, int i, int *count)
 			if (flag != 1)
 				flag = 2;
 			*count = *count + 1;
+			j++;
 		}
+		if (flag == 1 || flag == 2)
+			return (flag);
 		j++;
 	}
 	return (flag);
@@ -44,13 +59,14 @@ int		validate_tetrominos(char **map)
 {
 	int i;
 	int count;
+	int	flag;
 
 	count = 0;
 	i = 0;
 	while (i < 4)
 	{
-		if (check_sharps_line(map, i, &count) == 2)
-			break;
+		if ((flag = check_sharps_line(map, i, &count)) == 2)
+			break ;
 		i++;
 	}
 	if (count == 4)
@@ -58,13 +74,13 @@ int		validate_tetrominos(char **map)
 	return (1);
 }
 
-int     read_tetrominos(int fd, t_tetro *tetrominoses)
+int		read_tetrominos(int fd, t_tetro *tetrominoses)
 {
 	int		i;
 	char	*line;
 	char	**map;
-	int 	amount;
-	
+	int		amount;
+
 	amount = 0;
 	i = 0;
 	map = (char **)malloc(sizeof(char *) * 4);
@@ -76,17 +92,13 @@ int     read_tetrominos(int fd, t_tetro *tetrominoses)
 			free(map);
 			map = (char **)malloc(sizeof(char *) * 4);
 			i = 0;
-			get_next_line(fd, &line);
+			if (get_next_line(fd, &line) == 0)
+				return (-1);
 		}
-		if (line[0] == '\n' && i != 4)
+		if (line[0] == '\0' && i != 4)
 			return (-1);
-		map[i] = line;
-		if (ft_strlen(line) != 4)
-			return (-1);
-		if (check_chars_in_line(line))
-			return (-1);
-		i++;
-		if (i > 4)
+		map[i++] = line;
+		if (ft_strlen(line) != 4 || check_chars_in_line(line) || i > 4)
 			return (-1);
 		if (i == 4)
 		{
@@ -96,5 +108,7 @@ int     read_tetrominos(int fd, t_tetro *tetrominoses)
 				return (-1);
 		}
 	}
+	if (i != 4)
+		return (-1);
 	return (amount);
 }
