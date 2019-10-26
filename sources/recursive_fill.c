@@ -6,7 +6,7 @@
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 14:55:55 by atote             #+#    #+#             */
-/*   Updated: 2019/10/19 15:19:34 by atote            ###   ########.fr       */
+/*   Updated: 2019/10/26 15:33:12 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,17 @@ void		free_last_tetro(char **map, int size, char ch)
 	}
 }
 
-void		swap_tetros(t_tetro *tetros, int amount)
-{
-	t_tetro	tmp;
-	int		i;
-
-	i = 0;
-	while (i < amount)
-	{
-		tmp = tetros[i];
-		tetros[i] = tetros[i + 1];
-		tetros[i + 1] = tetros[i];
-		i++;
-	}
-}
-
 char		**new_map(int s)
 {
 	char	**map;
 	int		i;
 	int		j;
 
-	j = 0;
 	i = 0;
 	map = (char **)malloc(sizeof(char *) * s);
 	while (i < s)
 	{
-		map[i] = (char *)malloc(sizeof(char) * s + 1);
+		map[i] = (char *)malloc(sizeof(char) * (s + 1));
 		i++;
 	}
 	i = 0;
@@ -75,67 +59,27 @@ char		**new_map(int s)
 	return (map);
 }
 
-t_options	fill_tetros(t_tetro *tetro, t_options *map, int k)
+t_options	fill_tetros(t_tetro *t, t_options *m, int k)
 {
 	int		i;
 
 	i = 0;
+	if (set_cond(t, m, &k))
+		return (fill_tetros(t, m, k));
 	while (i < 4)
 	{
-		if ((tetro[k].starti + tetro[k].point[i][0] >= map->s) || (tetro[k].startj + tetro[k].point[i][1] >= map->s))
-		{
-			if (tetro[k].startj < map->s - 1)
-				tetro[k].startj = tetro[k].startj + 1;
-			else
-			{
-				tetro[k].startj = 0;
-				tetro[k].starti = tetro[k].starti + 1;
-			}
-			if (tetro[k].starti == map->s)
-			{
-				tetro[k].startj = 0;
-				tetro[k].starti = 0;
-				if (k == 0)
-				{
-					ft_free_array(map->squad, map->s);
-					map->s = map->s + 1;
-					map->squad = new_map(map->s);
-					return (fill_tetros(tetro, map, k));
-				}
-				k = k - 1;
-				tetro[k].startj = tetro[k].startj + 1;
-				map->ch = map->ch - 1;
-				free_last_tetro(map->squad, map->s, map->ch);
-			}
-			return (fill_tetros(tetro, map, k));
-		}
+		m->sq[t[k].si + t[k].pt[i][0]][t[k].sj + t[k].pt[i][1]] = m->ch;
 		i++;
 	}
-	i = 0;
-	while (i < 4)
-	{
-		if (map->squad[tetro[k].starti + tetro[k].point[i][0]][tetro[k].startj + tetro[k].point[i][1]] != '.')
-		{
-			tetro[k].startj = tetro[k].startj + 1;
-			return (fill_tetros(tetro, map, k));
-		}
-		i++;
-	}
-	i = 0;
-	while (i < 4)
-	{
-		map->squad[tetro[k].starti + tetro[k].point[i][0]][tetro[k].startj + tetro[k].point[i][1]] = map->ch;
-		i++;
-	}
-	if (k < map->amount - 1)
+	if (k < m->amount - 1)
 	{
 		k = k + 1;
-		tetro[k].startj = 0;
-		tetro[k].starti = 0;
-		map->ch = map->ch + 1;
-		return (fill_tetros(tetro, map, k));
+		t[k].sj = 0;
+		t[k].si = 0;
+		m->ch = m->ch + 1;
+		return (fill_tetros(t, m, k));
 	}
-	return (*map);
+	return (*m);
 }
 
 int			recursive_fill(t_tetro *tetros, int amount)
@@ -150,13 +94,13 @@ int			recursive_fill(t_tetro *tetros, int amount)
 	map.amount = amount;
 	map.ib = 0;
 	map.jb = 0;
-	map.s = 4;
-	map.squad = new_map(map.s);
+	map.s = 2;
+	map.sq = new_map(map.s);
 	map.ch = 'A';
 	res = fill_tetros(tetros, &map, k);
 	while (i < map.s)
 	{
-		ft_putstr(map.squad[i]);
+		ft_putstr(map.sq[i]);
 		ft_putstr("\n");
 		i++;
 	}

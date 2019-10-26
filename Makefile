@@ -1,8 +1,9 @@
 NAME = fillit
 
-SRCS =  sources/fillit.c sources/validate.c sources/get_tetrominos.c sources/recursive_fill.c
+SRCS =  sources/fillit.c sources/validate.c sources/get_tetrominos.c sources/recursive_fill.c \
+		sources/set_cond.c
 
-OBJ = fillit.o validate.o get_tetrominos.o recursive_fill.o 
+OBJ = fillit.o validate.o get_tetrominos.o recursive_fill.o set_cond.o 
 
 CFLAGS = gcc -Wall -Wextra -Werror
 

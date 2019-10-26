@@ -6,7 +6,7 @@
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 14:59:26 by atote             #+#    #+#             */
-/*   Updated: 2019/10/19 15:04:14 by atote            ###   ########.fr       */
+/*   Updated: 2019/10/26 16:00:55 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	norm_coord_tetro(t_tetro *tetrominoses, int t)
 	{
 		while (i < 4)
 		{
-			if (tetrominoses->point[i][t] == 0)
+			if (tetrominoses->pt[i][t] == 0)
 				flag = 1;
 			i++;
 		}
@@ -32,7 +32,7 @@ void	norm_coord_tetro(t_tetro *tetrominoses, int t)
 			i = 0;
 			while (i < 4)
 			{
-				tetrominoses->point[i][t] = tetrominoses->point[i][t] - 1;
+				tetrominoses->pt[i][t] = tetrominoses->pt[i][t] - 1;
 				i++;
 			}
 			i = -1;
@@ -56,16 +56,16 @@ void	get_tetrominos(char **map, t_tetro *tetrominoses)
 		{
 			if (map[i][j] == '#')
 			{
-				tetrominoses->point[k][0] = i;
-				tetrominoses->point[k][1] = j;
+				tetrominoses->pt[k][0] = i;
+				tetrominoses->pt[k][1] = j;
 				k++;
 			}
 			j++;
 		}
 		i++;
 	}
-	tetrominoses->starti = 0;
-	tetrominoses->startj = 0;
+	tetrominoses->si = 0;
+	tetrominoses->sj = 0;
 	norm_coord_tetro(tetrominoses, 0);
 	norm_coord_tetro(tetrominoses, 1);
 }

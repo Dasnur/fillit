@@ -26,6 +26,6 @@ int		main(int argc, char **argv)
 		ft_putstr_fd("error\n", 1);
 		return (0);
 	}
-	recursive_fill(tetrominoses, amount);
+	recursive_fill(tetrominoses, ++amount);
 	return (0);
 }
