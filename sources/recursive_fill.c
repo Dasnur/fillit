@@ -59,23 +59,25 @@ char		**new_map(int s)
 	return (map);
 }
 
-t_options	fill_tetros(t_tetro *t, t_options *m, int k)
+t_options	fill_tetros(t_tetro *t, t_options *m, int *k)
 {
 	int		i;
 
 	i = 0;
-	if (set_cond(t, m, &k))
-		return (fill_tetros(t, m, k));
+	if (set_cond(t, m, k))
+	{
+		return (*m);
+	}
 	while (i < 4)
 	{
-		m->sq[t[k].si + t[k].pt[i][0]][t[k].sj + t[k].pt[i][1]] = m->ch;
+		m->sq[t[*k].si + t[*k].pt[i][0]][t[*k].sj + t[*k].pt[i][1]] = m->ch;
 		i++;
 	}
-	if (k < m->amount - 1)
+	if (*k < m->amount - 1)
 	{
-		k = k + 1;
-		t[k].sj = 0;
-		t[k].si = 0;
+		*k = *k + 1;
+		t[*k].sj = 0;
+		t[*k].si = 0;
 		m->ch = m->ch + 1;
 		return (fill_tetros(t, m, k));
 	}
@@ -86,7 +88,6 @@ int			recursive_fill(t_tetro *tetros, int amount)
 {
 	t_options	map;
 	int			k;
-	t_options	res;
 	int			i;
 
 	i = 0;
@@ -97,12 +98,18 @@ int			recursive_fill(t_tetro *tetros, int amount)
 	map.s = 2;
 	map.sq = new_map(map.s);
 	map.ch = 'A';
-	res = fill_tetros(tetros, &map, k);
+	while (k == 0)
+	{
+		map = fill_tetros(tetros, &map, &k);
+		printf("%d", map.s);
+		printf("%d", k);
+	}
 	while (i < map.s)
 	{
 		ft_putstr(map.sq[i]);
 		ft_putstr("\n");
 		i++;
 	}
+	mem_clear(&(map.sq), map.s, 1);
 	return (0);
 }

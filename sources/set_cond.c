@@ -33,6 +33,15 @@ int			new_recursive_fill(t_tetro *t, t_options *m, int *k)
 	return (0);
 }
 
+int			mem_clear(char ***map, int i, int flag)
+{
+	ft_free_array(*map, i);
+	free(*map);
+	if (flag == 0)
+		return (-1);
+	return (0);
+}
+
 void		next_step(t_tetro *t, int k)
 {
 	t[k].sj = 0;

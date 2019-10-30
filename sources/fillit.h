@@ -46,7 +46,8 @@ int				check_chars_in_line(char *line);
 void			get_tetrominos(char **map, t_tetro *tetrominoses);
 void			free_last_tetro(char **map, int size, char ch);
 char			**new_map(int s);
-t_options		fill_tetros(t_tetro *tetro, t_options *map, int k);
+t_options		fill_tetros(t_tetro *tetro, t_options *map, int *k);
 int				recursive_fill(t_tetro *tetros, int amount);
+int				mem_clear(char ***map, int i, int flag);
 
 #endif

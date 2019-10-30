@@ -6,7 +6,7 @@
 /*   By: atote <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 14:48:08 by atote             #+#    #+#             */
-/*   Updated: 2019/10/19 16:25:42 by atote            ###   ########.fr       */
+/*   Updated: 2019/10/30 17:28:32 by atote            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ int		validate_tetrominos(char **map)
 			break ;
 		i++;
 	}
+	i++;
+	while (i < 4)
+	{
+		if (check_sharps_line(map, i, &count) != 0)
+			return (1);
+		i++;
+	}
 	if (count == 4)
 		return (0);
 	return (1);
@@ -78,16 +85,18 @@ int		ch_val_get(char *line, int *i, char **map, t_tetro *tetrominoses)
 {
 	if (line[0] == '\0' && *i != 4)
 		return (-1);
-		map[(*i)++] = line;
-		if (ft_strlen(line) != 4 || check_chars_in_line(line) || *i > 4)
+	if (*i >= 4)
+		return (-1);
+	map[(*i)++] = line;
+	if (ft_strlen(line) != 4 || check_chars_in_line(line))
+		return (-1);
+	if (*i == 4)
+	{
+		if (validate_tetrominos(map) == 0)
+			get_tetrominos(map, tetrominoses);
+		else
 			return (-1);
-		if (*i == 4)
-		{
-			if (validate_tetrominos(map) == 0)
-				get_tetrominos(map, tetrominoses);
-			else
-				return (-1);
-		}
+	}
 	return (0);
 }
 
@@ -103,20 +112,19 @@ int		read_tetrominos(int fd, t_tetro *tetrominoses)
 	map = (char **)malloc(sizeof(char *) * 4);
 	while (get_next_line(fd, &line) > 0)
 	{
-		if (line[0] == '\0' && i == 4)
+		if (line[0] == '\0' && i == 4 && ++amount)
 		{
-			ft_free_array(map, 4);
-			free(map);
-			map = (char **)malloc(sizeof(char *) * 4);
-			amount++;
+			mem_clear(&map, 4, 1);
 			i = 0;
 			if (get_next_line(fd, &line) == 0)
 				return (-1);
+			map = (char **)malloc(sizeof(char *) * 4);
 		}
 		if (ch_val_get(line, &i, map, &tetrominoses[amount]) == -1)
-			return (-1);
+			return (mem_clear(&map, i, 0));
 	}
 	if (i != 4)
-		return (-1);
+		return (mem_clear(&map, i, 0));
+	mem_clear(&map, 4, 1);
 	return (amount);
 }
